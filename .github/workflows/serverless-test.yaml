@@ -1,0 +1,45 @@
+name: Serverless Deployment
+
+on:
+  push:
+    branches:
+      - serverless/github-action/90
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ryanlawson/serverless-github-action@v4.0
+      with:
+        args: --version
+    - uses: ryanlawson/serverless-github-action@v4.0
+      with:
+        aws-credentials: true
+        args: --version
+    - uses: ryanlawson/serverless-github-action@v4.0
+      with:
+        aws-credentials: yes
+        args: --version
+    - uses: ryanlawson/serverless-github-action@v4.0
+      with:
+        aws-credentials: no
+        args: --version
+    - uses: ryanlawson/serverless-github-action@v4.0
+      with:
+        install-packages: serverless-prune-plugin serverless-plugin-typescript express
+        args: --version
+    - uses: ryanlawson/serverless-github-action@v4.0
+      with:
+        serverless-version: 2
+        args: --version
+    - uses: ryanlawson/serverless-github-action@v4.0
+      with:
+        working-directory: newdir
+        args: --version
+    - uses: ryanlawson/serverless-github-action@v4.0
+      with:
+        working-directory: newdir
+        args: --version
+    - uses: ryanlawson/serverless-github-action@v4.0
+      continue-on-error: true
