@@ -1,0 +1,7 @@
+Flask-Admin==1.6.1
+flask-apispec==0.11.4
+Flask-Cors==4.0.0
+flask-mongoengine-3 @ git+https://github.com/idoshr/flask-mongoengine.git@3eb8c1ae8d1edcf12df00049eb56e03533c07640
+Flask-RESTful==0.3.10
+Flask-WTF==1.2.1
+gunicorn==21.2.0
