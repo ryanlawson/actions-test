@@ -10,36 +10,84 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: ryanlawson/serverless-github-action@v4.0
+    - name: 'Happy Path: Run with defaults'
+      uses: ryanlawson/serverless-github-action@v4.0
       with:
         args: --version
-    - uses: ryanlawson/serverless-github-action@v4.0
+    - name: 'Sad Path: Run without args'
+      uses: ryanlawson/serverless-github-action@v4.0
+      continue-on-error: true
+    - name: 'Happy Path: Run with aws-credentials set as true'
+      uses: ryanlawson/serverless-github-action@v4.0
       with:
         aws-credentials: true
         args: --version
-    - uses: ryanlawson/serverless-github-action@v4.0
+      env:
+        AWS_ACCESS_KEY_ID: aws_access_key_id
+        AWS_SECRET_ACCESS_KEY: aws_secret_access_key
+    - name: 'Happy Path: Run with aws-credentials set as yes'
+      uses: ryanlawson/serverless-github-action@v4.0
       with:
         aws-credentials: yes
         args: --version
-    - uses: ryanlawson/serverless-github-action@v4.0
+      env:
+        AWS_ACCESS_KEY_ID: aws_access_key_id
+        AWS_SECRET_ACCESS_KEY: aws_secret_access_key
+    - name: 'Sad Path: Run with aws-credentials set as true without credentials set'
+      uses: ryanlawson/serverless-github-action@v4.0
+      with:
+        aws-credentials: true
+        args: --version
+      continue-on-error: true
+    - name: 'Sad Path: Run with aws-credentials set as yes without credentials set'
+      uses: ryanlawson/serverless-github-action@v4.0
+      with:
+        aws-credentials: yes
+        args: --version
+      continue-on-error: true
+    - name: 'Happy Path: Run with aws-credentials set as no, with environment variables set'
+      uses: ryanlawson/serverless-github-action@v4.0
       with:
         aws-credentials: no
         args: --version
-    - uses: ryanlawson/serverless-github-action@v4.0
+      env:
+        AWS_ACCESS_KEY_ID: aws_access_key_id
+        AWS_SECRET_ACCESS_KEY: aws_secret_access_key
+    - name: 'Happy Path: Run with aws-credentials set as no, without environment variables set'
+      uses: ryanlawson/serverless-github-action@v4.0
+      with:
+        aws-credentials: no
+        args: --version
+    - name: 'Happy Path: Install packages successfully'
+      uses: ryanlawson/serverless-github-action@v4.0
       with:
         install-packages: serverless-prune-plugin serverless-plugin-typescript express
         args: --version
-    - uses: ryanlawson/serverless-github-action@v4.0
+    - name: 'Sad Path: Fail to install packages'
+      uses: ryanlawson/serverless-github-action@v4.0
+      with:
+        install-packages: badpackage@badversion
+        args: --version
+      continue-on-error: true
+    - name: 'Happy Path: Use a specific serverless version'
+      uses: ryanlawson/serverless-github-action@v4.0
       with:
         serverless-version: 2
         args: --version
-    - uses: ryanlawson/serverless-github-action@v4.0
+    - name: 'Sad Path: Use a bad serverless version'
+      uses: ryanlawson/serverless-github-action@v4.0
+      with:
+        serverless-version: badversion
+        args: --version
+      continue-on-error: true
+    - name: 'Happy Path: Set a different working directory'
+      uses: ryanlawson/serverless-github-action@v4.0
+      with:
+        working-directory: /
+        args: --version
+    - name: 'Sad Path: Set a different working directory (does not exist)'
+      uses: ryanlawson/serverless-github-action@v4.0
       with:
         working-directory: newdir
         args: --version
-    - uses: ryanlawson/serverless-github-action@v4.0
-      with:
-        working-directory: newdir
-        args: --version
-    - uses: ryanlawson/serverless-github-action@v4.0
       continue-on-error: true
